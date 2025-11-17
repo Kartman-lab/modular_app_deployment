@@ -8,7 +8,6 @@ from dotenv import load_dotenv
 from pathlib import Path
 
 load_dotenv()
-print("SENTRY_DSN =", os.getenv("SENTRY_DSN"))
 
 sentry_logging = LoggingIntegration(
     level=logging.INFO, event_level=logging.ERROR, sentry_logs_level=logging.INFO
