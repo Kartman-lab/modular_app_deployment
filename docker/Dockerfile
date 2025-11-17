@@ -19,10 +19,6 @@ RUN pip install --upgrade pip && \
 # Copie du projet entier dans le conteneur
 COPY . .
 
-# Configuration de SECRET_KEY
-ARG SECRET_KEY
-ENV SECRET_KEY=${SECRET_KEY}
-
 # Port du serveur web
 EXPOSE 8000
 
