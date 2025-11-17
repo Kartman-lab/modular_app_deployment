@@ -20,7 +20,6 @@ sentry_sdk.init(
     enable_logs=True,
 )
 
-
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -31,17 +30,15 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.getenv("SECRET_KEY")
 
-# DOCKER SECURITY 
-DOCKERHUB_USERNAME=os.getenv("DOCKERHUB_USERNAME")
-DOCKERHUB_TOKEN=os.getenv('DOCKERHUB_TOKEN')
+# DOCKER SECURITY
+DOCKERHUB_USERNAME = os.getenv("DOCKERHUB_USERNAME")
+DOCKERHUB_TOKEN = os.getenv("DOCKERHUB_TOKEN")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 ALLOWED_HOSTS = ["127.0.0.1", "localhost"]
 
-
 # Application definition
-
 INSTALLED_APPS = [
     "oc_lettings_site.apps.OCLettingsSiteConfig",
     "lettings",
