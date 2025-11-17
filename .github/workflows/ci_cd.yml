@@ -2,9 +2,9 @@ name: CI_CD pipeline OC Lettings app
 
 on: 
   push: 
-    branches: [ main ]
+    branches: [ master ]
   pull_request: 
-    branches: [ main ]    
+    branches: [ master ]    
 
 jobs:
   test:
@@ -26,7 +26,8 @@ jobs:
       
       - name: Run tests
         run: pytest --cov --cov-report=term-missing --cov-fail-under=80
-    
+  
+
   linting: 
     name: Run linters
     runs-on: ubuntu-latest
@@ -34,6 +35,7 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
+
 
       - name: Set up python
         uses: actions/setup-python@v4
@@ -48,6 +50,7 @@ jobs:
         with:
           black: true
           flake8: true 
+
   
   docker:
     name: Build container
