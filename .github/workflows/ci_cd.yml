@@ -89,6 +89,8 @@ jobs:
           tags: |
             ${{ secrets.DOCKERHUB_USERNAME }}/oc_lettings_app:latest
             ${{ secrets.DOCKERHUB_USERNAME }}/oc_lettings_app:${{ github.sha }}
+          build-args: SECRET_KEY=${{ secrets.SECRET_KEY }}
+
 
 
 
