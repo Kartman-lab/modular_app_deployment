@@ -1,45 +1,41 @@
-# indique la syntaxe version du dockerfile 
-version: '3.9'
-
-# Début de la session qui défini les conteneurs 
+# Début de la session qui définit les conteneurs 
 services:
-  # Nom du conteneur de l'application
   django:
-  # directive pour construire l'image localement
+    # construire l'image localement
     build:
-    # chemin pour trouver le code de l'app 
       context: ..
       dockerfile: docker/Dockerfile
+      args:
+        SECRET_KEY: ${SECRET_KEY}
     container_name: oc_lettings_django
-    # commande pour lancer le conteneur et le lier au port 8000
-    command: gunicorn oc_lettings_site.wsgi:application --bind 0.0.0.0:8000
-    # partager les fichiers statics entre le conteneur django et le conteneur nginx
-    volumes:
-      - static_volume:/app/staticfiles   # Django écrit ses statics ici
 
-    # mappe le port 8000 de l'app au port 8000 de la machine 
+    # utiliser le fichier .env pour injecter les variables d'environnement
+    env_file:
+      - ../.env 
+
+    # commande pour lancer le conteneur et collecter les statics
+    command: sh -c "python manage.py collectstatic --noinput && gunicorn oc_lettings_site.wsgi:application --bind 0.0.0.0:8000"
+
+    # partager les fichiers statics
+    volumes:
+      - static_volume:/app/staticfiles
+
+    # mapper le port 8000 du conteneur au port 8000 de la machine
     ports:
       - "8000:8000"
-    # variable d'environnement pour ecrire les logs dans la console
-    environment:
-      - PYTHONUNBUFFERED=1
 
-  # conteneur nginx pour les fichiers statics 
   nginx:
-    # utilise l'image officielle nginx
     image: nginx:alpine
     container_name: oc_lettings_nginx
-    # mappe le port 80 du conteneur au port 80 de la machine
     ports:
-      - "80:80"
+      - "80:80"  # le port public
     volumes:
-      - static_volume:/usr/share/nginx/html:ro   # Nginx lit les statics
+      - static_volume:/usr/share/nginx/html:ro  # statics partagés avec Django
       - ./nginx.conf:/etc/nginx/conf.d/default.conf:ro
-    
-    # Permet de demarrer d'abord django avant de lancer le conteneur nginx
     depends_on:
       - django
 
-# déclaration du volume docker 
+
+# déclaration du volume docker
 volumes:
   static_volume:

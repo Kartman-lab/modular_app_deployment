@@ -23,9 +23,6 @@ COPY . .
 ARG SECRET_KEY
 ENV SECRET_KEY=${SECRET_KEY}
 
-# Collecte des fichiers statiques de Django (pour la prod)
-RUN python manage.py collectstatic --noinput
-
 # Port du serveur web
 EXPOSE 8000
 
