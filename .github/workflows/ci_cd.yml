@@ -109,10 +109,18 @@ jobs:
         run: |
           scp -i aws-key.pem -o StrictHostKeyChecking=no -r . ubuntu@${{ secrets.AWS_HOST }}:/home/ubuntu/app
 
+      - name: Setup .env on EC2
+        run: |
+          ssh -o StrictHostKeyChecking=no -i aws-key.pem ubuntu@${{ secrets.AWS_HOST }} <<EOF
+          cat > /home/ubuntu/app/.env <<EOT
+          SECRET_KEY=${{ secrets.SECRET_KEY }}
+          # ajoute les autres variables ici si nécessaire
+          EOT
+          EOF
 
       - name: Run Docker Compose on EC2
         run: |
-          ssh -o StrictHostKeyChecking=no -i aws-key.pem ubuntu@${{ secrets.AWS_HOST }} << 'EOF'
+          ssh -o StrictHostKeyChecking=no -i aws-key.pem ubuntu@${{ secrets.AWS_HOST }} <<EOF
           cd /home/ubuntu/app
           docker compose -f docker/docker-compose.yml down || true
           docker compose -f docker/docker-compose.yml up -d --build
