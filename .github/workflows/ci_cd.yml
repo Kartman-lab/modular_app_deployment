@@ -102,12 +102,13 @@ jobs:
 
       - name: Setup SSH key
         run: |
-          printf "%s\n" "${{ secrets.AWS_KEY }}" > aws-key.pem
+          echo "${{ secrets.AWS_KEY }}" > aws-key.pem
           chmod 600 aws-key.pem
 
       - name: Copy files to EC2
         run: |
-          scp -o StrictHostKeyChecking=no -r . ubuntu@${{ secrets.AWS_HOST }}:/home/ubuntu/app
+          scp -i aws-key.pem -o StrictHostKeyChecking=no -r . ubuntu@${{ secrets.AWS_HOST }}:/home/ubuntu/app
+
 
       - name: Run Docker Compose on EC2
         run: |
