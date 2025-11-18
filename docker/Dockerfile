@@ -19,6 +19,9 @@ RUN pip install --upgrade pip && \
 # Copie du projet entier dans le conteneur
 COPY . .
 
+# Collecte des fichiers statiques
+RUN python manage.py collectstatic --noinput
+
 # Port du serveur web
 EXPOSE 8000
 

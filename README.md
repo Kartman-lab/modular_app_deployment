@@ -75,3 +75,26 @@ Utilisation de PowerShell, comme ci-dessus sauf :
 
 - Pour activer l'environnement virtuel, `.\venv\Scripts\Activate.ps1` 
 - Remplacer `which <my-command>` par `(Get-Command <my-command>).Path`
+
+#### Lancer l'application Docker en local depuis Docker Hub
+
+- Récupérer l'image docker
+```bash
+docker pull kartmandev/oc_lettings_app:latest
+```
+
+- Lancer le conteneur Django  
+```bash 
+docker run -p 8000:8000 --env-file .env kartmandev/oc_lettings_app:latest
+```
+
+- Lancer le conteneur avec les fichiers statics : 
+```bash
+docker-compose -f docker/docker-compose.yml up
+```
+
+- Lancer le conteneur en background : 
+```bash
+docker-compose -f docker/docker-compose.yml up -d
+```
+Accèder au site sur le port 80 =>  http://localhost
