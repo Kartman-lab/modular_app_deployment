@@ -102,8 +102,8 @@ jobs:
 
       - name: Setup SSH key
         run: |
-          echo "${{ secrets.AWS_KEY }}" > aws-key.pem
-          chmod 600 aws-key.pem
+          echo "${{ secrets.AWS_KEY }}" > aws-keys.pem
+          chmod 600 aws-keys.pem
 
       - name: Copy files to EC2
         run: |
@@ -111,7 +111,7 @@ jobs:
 
       - name: Run Docker Compose on EC2
         run: |
-          ssh -o StrictHostKeyChecking=no -i aws-key.pem ubuntu@${{ secrets.AWS_HOST }} << 'EOF'
+          ssh -o StrictHostKeyChecking=no -i aws-keys.pem ubuntu@${{ secrets.AWS_HOST }} << 'EOF'
           cd /home/ubuntu/app
           docker compose down || true
           docker compose up -d --build
