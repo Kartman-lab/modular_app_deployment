@@ -83,8 +83,8 @@ jobs:
         name: Build and push images
         
         run: |
-          docker compose -f docker/docker-compose.yml build
-          docker tag <django_image> ${{ secrets.DOCKERHUB_USERNAME }}/oc_lettings_app:latest
+          docker compose -f docker/docker-compose.yml build --build-arg SECRET_KEY=${{secrets.SECRET_KEY }}
+          docker tag oc_lettings_django:latest ${{ secrets.DOCKERHUB_USERNAME }}/oc_lettings_app:latest
           docker push ${{ secrets.DOCKERHUB_USERNAME }}/oc_lettings_app:latest
 
 
