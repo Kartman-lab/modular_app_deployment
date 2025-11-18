@@ -7,6 +7,7 @@ services:
       dockerfile: docker/Dockerfile
       args:
         SECRET_KEY: ${SECRET_KEY}
+    image: oc_lettings_django:latest
     container_name: oc_lettings_django
 
     # utiliser le fichier .env pour injecter les variables d'environnement
