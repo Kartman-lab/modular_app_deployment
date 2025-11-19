@@ -15,10 +15,7 @@ python:
   install:
     # Installe les dépendances nécessaires pour construire la doc
     - requirements: docs/requirements.txt
-    # Installe ton projet lui-même (pour que Sphinx autodoc puisse importer le code)
-    - method: pip
-      path: .
-      
+ 
 # Formats supplémentaires pour la doc (PDF et EPUB)
 formats:
   - pdf
