@@ -76,25 +76,84 @@ Utilisation de PowerShell, comme ci-dessus sauf :
 - Pour activer l'environnement virtuel, `.\venv\Scripts\Activate.ps1` 
 - Remplacer `which <my-command>` par `(Get-Command <my-command>).Path`
 
-#### Lancer l'application Docker en local depuis Docker Hub
+### Lancer l'application Docker en local depuis Docker Hub
 
-- Récupérer l'image docker
+- **Récupérer l'image docker**
 ```bash
 docker pull kartmandev/oc_lettings_app:latest
 ```
 
-- Lancer le conteneur Django  
+- **Lancer le conteneur Django**  
 ```bash 
 docker run -p 8000:8000 --env-file .env kartmandev/oc_lettings_app:latest
 ```
 
-- Lancer le conteneur avec les fichiers statics : 
+- **Lancer le conteneur avec les fichiers statics** 
 ```bash
 docker-compose -f docker/docker-compose.yml up
 ```
 
-- Lancer le conteneur en background : 
+- **Lancer le conteneur en background**  
 ```bash
 docker-compose -f docker/docker-compose.yml up -d
 ```
 Accèder au site sur le port 80 =>  http://localhost
+
+- **Commande unique pour pull et run**
+```bash 
+docker-compose -f docker/docker-compose.yml pull && docker-compose -f docker/docker-compose.yml up -d
+```
+
+### Déploiement sur AWS
+
+1. **Créer une instance EC2 et générer une clé SSH**
+   - Lancer une instance EC2 (Ubuntu 24.04 LTS par exemple).
+   - Générer une nouvelle paire de clés SSH (`nom_de_clef.pem`) et la télécharger sur votre machine locale.
+   - Donner les permissions correctes à la clé :
+     ```bash
+     chmod 400 ~/Downloads/nom_de_clef.pem
+     ```
+
+2. **Ajouter les règles du groupe de sécurité**
+   - Autoriser le trafic entrant sur les ports **22** (SSH), **80** (HTTP) et **8000** (Django, si nécessaire) depuis votre IP ou depuis 0.0.0.0/0 pour test.
+
+3. **Se connecter à l’instance EC2**
+   ```bash
+   ssh -i ~/Downloads/nom_de_clef.pem ubuntu@<IP_PUBLIQUE_DE_L_INSTANCE>
+   ```
+
+4. **Cloner le projet sur l'instance**
+  ```bash
+  git clone <lien_du_repo_git>
+  cd <nom_du_repo>
+  ```
+
+5. **Créer un fichier .env**
+   - Copier le ficher `.env.example`
+   ```bash 
+   cp .env.example .env
+   ```
+
+  - Remplir le fichier avec vos valeurs secrètes
+
+6. **Installer Docker et Docker Compose dans l'instance**
+    ```bash
+    sudo apt update
+    sudo apt install docker.io -y
+    sudo systemctl enable --now docker
+    sudo usermod -aG docker $USER  
+    ```
+
+  - Lancer Docker:
+    ```bash
+    docker compose up -d --build
+    ```
+
+7. **Vérifier que tout fonctionne**
+  - Accèder au site via l'adresse IP publique de l'instance
+  - Pour arreter le site : 
+  ```bash 
+  docker/docker-compose down -v
+  ```
+
+
