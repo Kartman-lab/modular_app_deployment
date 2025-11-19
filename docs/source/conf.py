@@ -5,10 +5,10 @@
 
 # -- Project information -----------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
-
 project = 'OC Lettings'
 copyright = '2025, Arnaud'
 author = 'Arnaud'
+version = '1.0' 
 release = '1.0'
 
 # -- General configuration ---------------------------------------------------
