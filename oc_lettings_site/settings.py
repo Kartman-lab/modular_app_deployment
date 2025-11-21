@@ -36,7 +36,11 @@ DOCKERHUB_TOKEN = os.getenv("DOCKERHUB_TOKEN")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
-ALLOWED_HOSTS = ["3.133.90.150", "ec2-3-133-90-150.us-east-2.compute.amazonaws.com"]
+ALLOWED_HOSTS = [
+    "3.133.90.150", 
+    "ec2-3-133-90-150.us-east-2.compute.amazonaws.com",
+    "localhost",
+]
 
 # Application definition
 INSTALLED_APPS = [
