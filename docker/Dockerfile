@@ -1,6 +1,3 @@
-# ==========================
-# Choix de l’image de base
-# ==========================
 FROM python:3.10-slim
 
 # Empêche la création des fichiers .pyc (inutiles dans Docker)
